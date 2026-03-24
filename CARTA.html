@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TE AMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8e8f2;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* Contenedor principal */
+        .contenedor-principal {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        /* Estilos de secciones */
+        .seccion {
+            display: none;
+            background-color: #fff;
+            width: 100%;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(221, 160, 221, 0.3);
+            text-align: center;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .seccion-1 {
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .mostrar {
+            display: block !important;
+        }
+
+        /* Estilos de texto */
+        .titulo-principal {
+            color: #d63384;
+            font-size: 2.5rem;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
+        }
+
+        .frase {
+            color: #333;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin: 20px 0;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .texto-largo {
+            color: #333;
+            font-size: 1rem;
+            line-height: 1.8;
+            text-align: justify;
+            margin: 20px 0;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .pregunta {
+            color: #d63384;
+            font-size: 1.5rem;
+            margin: 30px 0;
+            font-family: 'Dancing Script', cursive;
+            font-weight: bold;
+        }
+
+        /* Estilos de fotos */
+        .foto-contenedor {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .foto-personalizada {
+            max-width: 80%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(214, 51, 132, 0.2);
+        }
+
+        .foto-texto {
+            font-family: 'Dancing Script', cursive;
+            color: #d63384;
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Estilos de botón continuar (corazón) */
+        .corazon-continuar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .corazon-icono {
+            width: 50px;
+            height: 50px;
+            background-color: #d63384;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: latir 0.8s infinite alternate;
+        }
+
+        .texto-continuar {
+            font-family: 'Dancing Script', cursive;
+            color: #d63384;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .corazon-continuar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Estilos de botones */
+        .opciones {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
+        }
+
+        .btn-si {
+            background-color: #d63384;
+            color: white;
+        }
+
+        .btn-si:hover {
+            background-color: #b02a68;
+            transform: scale(1.05);
+        }
+
+        .btn-no {
+            background-color: #6c757d;
+            color: white;
+            position: relative;
+        }
+
+        /* Estilos de pantalla final */
+        .pantalla-final {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #d63384;
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .texto-final {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
+        }
+
+        .corazon-flotante {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: flotar 3s ease-in-out infinite;
+            z-index: 5;
+        }
+
+        /* Animaciones */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes latir {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes flotar {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-20px) rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Media queries para responsividad */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            .titulo-principal {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+
+            .seccion {
+                padding: 25px 20px;
+                margin: 0 auto;
+            }
+
+            .frase {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Animación de la imagen */
+        .foto-animada {
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Estilo para la imagen de la sección 1 */
+        .foto-seccion-1 {
+            max-width: 60%;
+        }
+
+        /* Estilos para la última sección */
+        .pantalla-final .foto-contenedor {
+            display: flex;
+            flex-direction: row; /* Alinear las imágenes horizontalmente */
+            justify-content: center; /* Centrar las imágenes */
+            align-items: center;
+            flex-wrap: wrap; /* Permitir que las imágenes se envuelvan a la siguiente línea */
+        }
+
+        .pantalla-final .foto-personalizada {
+            max-width: 30%; /* Imágenes más pequeñas */
+            margin: 10px; /* Espacio entre las imágenes */
+        }
+
+        .pantalla-final .texto-final {
+            font-size: 2rem; /* Ajustar el tamaño del texto */
+            margin-bottom: 20px;
+        }
+        /* Estilos específicos para la sección 1 */
+        .seccion-1 .titulo-principal {
+            font-size: 3rem; /* Texto más grande */
+        }
+
+        .seccion-1 .foto-contenedor {
+            margin-bottom: 30px; /* Espacio adicional debajo de la imagen */
+        }
+    </style>
+</head>
+<body>
+    <audio id="musicaFondo" loop>
+        <source src="Nossa musica.mp3" type="audio/mpeg">
+    </audio>
+    <div class="contenedor-principal">
+        <!-- Sección 1 -->
+        <div class="seccion-1 mostrar" id="seccion1">
+            <h1 class="titulo-principal">¡Bom, para iniciarmos de verdade tudo!              
+                    espero que goste❤️❤️.....</h1>
+            <div class="foto-contenedor">
+                <img src="IMG-20240927-WA0039.jpg" alt="Imagen de la sección 1" class="foto-personalizada">
+            </div>
+            
+            <div class="corazon-continuar" onclick="mostrarSeccion(2)">
+                <div class="corazon-icono"></div>
+                <span class="texto-continuar">❤️🔜 PRÓXIMA...</span>
+            </div>
+        </div>
+
+        <!-- Sección 2 -->
+        <div class="seccion" id="seccion2">
+            <h2 class="titulo-principal">AMOR DA MINHA VIDA❤️</h2>
+            <div class="foto-contenedor">
+                <img src="IMG-20240928-WA0094.jpg" alt="Juntos" class="foto-personalizada foto-animada">
+                <p class="foto-texto">ESSE DIA VAMOS LEMBRAR PARA SEMPRE : .</p>
+            </div>
+            <p class="texto-largo">
+                Essa "cartinha" vai ser um pouco diferente tá? Agora podemos dizer que realmente é o começo do seu presente do nosso dia. Pode parecer simples no começo mas creio que você vai enxergar o verdadeiro significado disso tudo tá? Resolvi nesses dois primeiros dias focar em fazer uma coisa que você amou tanto, que como você mesmo já disse que foi a sua cartinha preferida, a sua primeira cartinha! E quem poderia imaginar que depois daquelas minhas palavras tudo mudaria entre a gente, que finalmente depois de eu conseguir te mostrar o quanto você já era especial para mim em tão "pouco" tempo nós so fomos nos conectnando mais e mais e estamos aqui agora. Na sua o que? 21378 cartinha? Kkkkkk confesso que dessa parte eu não sei ao certo quantas tem mas eu sei que tem muitas já!!!!
+            </p>
+            <div class="corazon-continuar" onclick="mostrarSeccion(3)">
+                <div class="corazon-icono"></div>
+                <span class="texto-continuar">❤️🔜 PRÓXIMA...</span>
+            </div>
+        </div>
+
+        <!-- Sección 3 -->
+        <div class="seccion" id="seccion3">
+            <h2 class="titulo-principal">Minha ruivinha maravilhosa❤️</h2>
+            <div class="foto-contenedor">
+                <img src="IMG-20241006-WA0043.jpg" alt="Nosotros" class="foto-personalizada foto-animada">
+                <p class="foto-texto">Para sempre nós.</p>
+            </div>
+            <p class="texto-largo">
+                Fazendo essa e a outra confesso que estava enferrujado demais bichola kkkkk e talvez por vários momentos em que pensei de fazer isso para você eu mesmo duvídei que era capaz mas efim estou aqui tentando ao máximo fazer tudo bonitinho tá? Mas vamos lá, se eu fosse escrever, falar, tudo o que eu quero te falar você iria ganhar o maior pergaminho já existente nesse mundo, ai eu pensei "bom se ela não está com quase nada de paciência comigo como que eu vou entregar uma biblía escrita para ela" ai eu falei opa, vou separar tudo o que eu quero em seis partes, ai ela pode ir dividindo durante os dias e não vai ficar pesado.
+            </p>
+            <div class="corazon-continuar" onclick="mostrarSeccion(4)">
+                <div class="corazon-icono"></div>
+                <span class="texto-continuar">❤️🔜 PRÓXIMA...</span>
+            </div>
+        </div>
+
+        <!-- Sección 4 -->
+        <div class="seccion" id="seccion4">
+            <p class="foto-texto">...</p>
+            <p class="texto-largo">
+                E bom, acho que nesse nosso mês nós dois passamos por muitas e muitas coisas. Se falarmos que foi facíl estaremos mentindo e muito ainda mas conseguimos e estamos passando por tudo juntos!
+                Estamos no nosso 100% já? Longe disso mas sei que cada dia que passa vamos aumentando mais, e mais essa nossa porcentagem. E com tudo isso que estou preparando para você eu quero mostrar além do nosso amor gigantesco, que eu estou melhorando, que cada dia que passa eu estou evoluindo como pessoa, como homem, como filho e principalmente, como um marido seu que vou ser no futuro!
+                E esse está sendo o meu maior desafio até agora, eu não quero parar em nenhum momento de melhorar e quero que isso seja para sempre, que cada dia que passe eu possa ser mais capacitado para te dar um futuro gigantesco lá na frente, um futuro para a nossa familía.
+                E ultimamente eu só ando buscando isso mesmo, "moer" como os piões falam la na linha kkkkk durante a semana e final de semana aproveitar com você, curtir cada segundo ao seu lado, aproveitar cada carinho que me dá, ouvir cada palavra sua por que antes desse mês eu já sabia como era bom isso, mas depois de tudo o que aconteceu, dos vazios IMENSOS que foram os meus dias sem você eu nunca mais quero perder cada segundo ao seu lado.
+            </p>
+            <div class="corazon-continuar" onclick="mostrarSeccion(5)">
+                <div class="corazon-icono"></div>
+                <span class="texto-continuar">❤️🔜 PRÓXIMA...</span>
+            </div>
+        </div>
+
+        <!-- Sección 5 -->
+        <div class="seccion" id="seccion5">
+             <p class="foto-texto"> Eu nunca mais quero perder algum momento com você...</p>
+            <p class="texto-largo">
+                E se você tiver noção de cada coisa que estou planejando para nós você já vai ficar com frio na barriga de ansiedade kkkkkk, acho que nunca é tarde para começar alguma coisa, eu quase me matei com tudo o que aconteceu mas graças a Deus, ele te fez me dar outra chance então era óbvio que iria começar tudo aquilo que eu apenas falava.
+                E com isso, te fazer feliz todos os dias possiveis, não vou mentir, é claro que eu já queria voltar a ouvir um "boa noite amor, eu te amo muito", que eu queria ouvir cada migalha do que acontece no seu dia, que eu queria poder te abraçar e dar um beijinho na sua testa todos os dias a noite além de muitas e muitas outras coisas, mas sei também que tenho que respeitar
+                esse seu momento, de que de pouco em pouco tudo isso vai voltar, que eu vou voltar a ter a minha ruivinha diariamente 100% presente na minha vida. E calhou que por uma memória do google fotos me fez lembrar do que é esse 24/03 para você, sempre tive muito medo e muita cautela com tudo isso, pode perceber que eu pergunto as coisas bem de vez enquando apesar de você já ter me dito que ama falar sobre o que o dodô era 
+                então deixando esse meu medo de lado, vou falar o que eu sempre quis falar dele ná próxima página, então eu me despeço aqui das minhas palavrar e volto amanhã com mais um presente. EU TE AMO MUITO JULIA CRIVELLARO!!!!!!
+            </p>
+            <div class="corazon-continuar" onclick="mostrarSeccion(6)">
+                <div class="corazon-icono"></div>
+                <span class="texto-continuar">❤️🔜 PRÓXIMA...</span>
+            </div>
+        </div>
+
+       <!-- Sección 6 -->
+        <div class="seccion" id="seccion6">
+            <h2 class="titulo-principal">Dodo</h2>
+            <div class="foto-contenedor">
+                <img src="WhatsApp Image 2026-03-24 at 19.51.05.jpeg" alt="Nosotros" class="foto-personalizada foto-animada">
+            </div>
+            <p class="texto-largo">
+                Eu nunca imaginei na vida que eu sentiria tanto um dia sem mesmo nunca ter trocado uma palavra com essa pessoa, tudo o que remete o seu pai me deixa com um aperto no coração assim sabe? E toda vez que alguém fala dele, toca no nome dele eu paro tudo para ouvir.
+                E por que eu sinto isso? Acho que uma parte é por que o brilho no seu olhar quando fala dele, o tom doce da sua voz quando fala dele, tudo o que você demonstra quando fala dele eu vejo muito raramente em você. É de uma leveza, de um amor, de um brilho que deixa o meu coração tão quentinho, 
+                que se eu pudesse perguntar eu gostaria de saber cada história que você viveu com ele. Não sei se você vai acreditar nisso mas estou chorando escrevendo essa parte, de tudo o que eu já escutei do dodo eu não consigo não imaginar o quanto eu e ele nos dariamos bem, é claro que você fala que se ele visse
+                algumas coisas que eu faço ou que eu não sei fazer que ele ficaria com vergonha, mas isso é o de menos, eu não consigo não imaginar o quanto eu e ele seriamos amigos kkkkk, tentei fazer com o pouco que eu tenho dele essa foto nossa com a IA, para ter um gostinho de como seria, eu uso com maior orgulho e alegria aquele broche dele de nossa senhora aparecida
+                e cada pessoa que pergunta da onde ele é eu falo que era do seu pai, cada noite que eu durmo com a camiseta da oficina dele além de ter uma coisa que me lembra você a noite tem a parte que eu lembro dele.
+                Só depois do que passei com a minha vó eu consigo entender a dor que é perder uma pessoa dessa significancia, eu sei que esse dia e o dia do falecimento dele é muito pesado para você, mesmo que você não fale ou demonstre tanto eu te conheço muito bem para saber disso, e se minhas palavras tem algum poder sobre você leia isso aqui com carinho agora:
+                Se tem uma pessoa que tenho 100% de certeza que se orgulha de tudo de você é ele la do céu, desde a nossa primeira conversa você falava da sua cnh, que era o sonho do seu pai te ver dirigindo e agora ele tem a melhor visão sobre isso, o quanto ele deve ter soltado fogos quando você finalmente comprou o seu kazinho não está escrito!!!!
+                Fora o que ele acompanha de você sendo enfermeira, de você ajudando cada pessoa que consegue, você brinca que trata melhor os seus pacientes do que nós e esta tudo bem isso, se cada pessoa que está passando por um momento dificíl tivesse o poder de ouvir sua voz e te olhar tenho certeza que o mundo estaria muito melhor e tenho certeza que ele se orgulha muito disso.
+                Estou aqui para ouvir tudo de você, e caso você queira contar mais e mais histórias sobre ele saiba que eu ficaria muito feliz tá? Enfim, se eu pudesse ter a oportunidade de conversar 24h com ele pode ter certeza que seriam uma das melhores horas da minha vida!
+            </p>
+            <div class="corazon-continuar" onclick="mostrarPantallaFinal()">
+                <div class="corazon-icono"></div>
+                <span class="texto-continuar">Última página 🐙</span>
+            </div>
+        </div>
+
+        <!-- Pantalla final -->
+        <div class="pantalla-final" id="pantallaFinal">
+            <div class="foto-contenedor" style="z-index: 10;">
+                <img src="WhatsApp Image 2026-03-24 at 19.51.05 (1).jpeg" alt="Nuestro amor" class="foto-personalizada foto-animada">
+                <img src="WhatsApp Image 2026-03-24 at 19.51.05 (2).jpeg" alt="Nuestro amor" class="foto-personalizada foto-animada">
+                <img src="WhatsApp Image 2026-03-24 at 19.51.06 (1).jpeg" alt="Nuestro amor" class="foto-personalizada foto-animada">
+                <img src="WhatsApp Image 2026-03-24 at 19.51.06.jpeg" alt="Nuestro amor" class="foto-personalizada foto-animada">
+            </div>
+
+    <script>
+        let seccionActual = 1;
+
+        function mostrarSeccion(num) {
+            if (num > seccionActual) {
+                const musica = document.getElementById("musicaFondo");
+                if (musica.paused) {
+                    musica.play();
+                }
+                document.querySelectorAll('.seccion, .seccion-1').forEach(s => {
+                    s.classList.remove('mostrar');
+                    s.style.display = 'none';
+                });
+                const seccionDestino = document.getElementById(`seccion${num}`);
+                seccionDestino.style.display = 'block';
+                seccionDestino.classList.add('mostrar');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                seccionActual = num;
+            }
+        }
+
+        function moverBotonNo(event) {
+            const btn = event.target;
+            const maxX = window.innerWidth - btn.offsetWidth - 20;
+            const maxY = window.innerHeight - btn.offsetHeight - 20;
+            btn.style.left = `${Math.random() * maxX}px`;
+            btn.style.top = `${Math.random() * maxY}px`;
+            btn.innerText = 'Sem escapar 😜';
+        }
+
+        function mostrarPantallaFinal() {
+            document.querySelectorAll('.seccion, .seccion-1').forEach(s => {
+                s.classList.remove('mostrar');
+                s.style.display = 'none';
+            });
+            const final = document.getElementById('pantallaFinal');
+            final.style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
